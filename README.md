@@ -8,7 +8,7 @@ git clone https://github.com/Giveth/vault-fetch-service.git && cd vault-fetch-se
 ## Configuration
 1. Make a config copy:
     ```
-    cp .env.template ./env
+    cp .env.template .env
     ```
 2. Paste in your own Vault Configurations:
     ```
