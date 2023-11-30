@@ -14,14 +14,9 @@ SLEEP_INTERVAL=10
 function check_env_file {
   if [ ! -f "$ENV_FILE" ]; then
       echo "Error: $ENV_FILE not found!"
-      echo "Do you want to create it? (y/n)"
-      read answer
-      if [ "$answer" != "${answer#[Yy]}" ] ;then
-          touch "$ENV_FILE"
-          echo "$ENV_FILE created."
-      else
-          exit 1
-      fi
+      echo "Creating the file now"
+      touch "$ENV_FILE"
+      echo "$ENV_FILE created."
   fi
 }
 
