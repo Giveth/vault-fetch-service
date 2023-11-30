@@ -1,5 +1,16 @@
 #!/bin/bash
 
+set -e
+
+# Check if the script is running as root
+if [ "$EUID" -ne 0 ]; then
+    echo "Please run the script as root or with sudo."
+    exit 1
+fi
+
+# Get Current User
+CURRENT_USER="$(whoami)"
+
 # Get current directory
 SCRIPT_DIR="$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
@@ -18,7 +29,7 @@ After=network.target
 [Service]
 WorkingDirectory=$SCRIPT_DIR
 Type=simple
-User=devops
+User=$CURRENT_USER
 Group=users
 TimeoutStartSec=0
 Restart=on-failure
