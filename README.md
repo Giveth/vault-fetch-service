@@ -26,10 +26,10 @@ git clone https://github.com/Giveth/vault-fetch-service.git && cd vault-fetch-se
 ## Installation & Uninstallation
 1. Install the service
     ```
-    bash install-svc.sh
+    sudo bash install-svc.sh
     ```
 2. Uninstall the service
     ```
-    bash uninstall-svc.sh
+    sudo bash uninstall-svc.sh
     ```
 
