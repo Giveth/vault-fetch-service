@@ -61,8 +61,11 @@ function fetch_secrets {
 # Run functions
 function main {
     check_env_file
-    check_connectivity
-    fetch_secrets
+    if check_connectivity; then
+        fetch_secrets
+    else
+        echo "Connectivity to Vault is not OK. Keeping the existing $ENV_FILE."
+    fi
 }
 
 main
