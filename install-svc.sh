@@ -17,8 +17,7 @@ SCRIPT_DIR="$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 # Define scripts
 scripts=('vault-fetcher')
 
-# Get environment variables from .env file
-ENV_VARS=$(sed -n -e '/^#/!p' "$SCRIPT_DIR/.env" | grep -v -e '^$')
+# Get environment variable file name
 ENV_FILE="$SCRIPT_DIR/.env"
 
 for script in "${scripts[@]}"; do
