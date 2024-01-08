@@ -19,6 +19,7 @@ scripts=('vault-fetcher')
 
 # Get environment variables from .env file
 ENV_VARS=$(sed -n -e '/^#/!p' "$SCRIPT_DIR/.env" | grep -v -e '^$')
+ENV_FILE="$SCRIPT_DIR/.env"
 
 for script in "${scripts[@]}"; do
   # Create systemd service file
@@ -35,8 +36,7 @@ TimeoutStartSec=0
 Restart=on-failure
 RestartSec=10s
 ExecStart=/bin/bash $SCRIPT_DIR/$script.sh
-$ENV_VARS
-
+EnvironmentFile=$ENV_FILE
 [Install]
 WantedBy=multi-user.target
 EOF

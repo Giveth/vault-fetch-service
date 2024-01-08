@@ -26,31 +26,37 @@ function check_connectivity {
 
   if [[ $STATUS_CODE -eq 200 ]]; then
       echo "Connected successfully to Vault and the token is valid."
+      return 0
   else
       echo "Error: Could not connect to Vault at $VAULT_ADDR or the token is invalid."
-      exit 1
+      return 1
   fi
 }
 
 function fetch_secrets {
   while true; do
     echo "Reading local secrets from $ENV_FILE..."
-    LOCAL_SECRETS=$(cat $ENV_FILE)
+    LOCAL_SECRETS=$(cat "$ENV_FILE")
 
     # Get Secrets
     echo "Fetching secrets from Vault..."
-    SECRETS=$(curl -s \
+    RESPONSE=$(curl -s \
       -H "X-Vault-Request: true" \
       -H "X-Vault-Token: $VAULT_TOKEN" \
       --request GET \
-      "$VAULT_ADDR/v1/$ENGINE_NAME/data/$SECRET_PATH" | jq -r '.data.data | to_entries[] | "\(.key)=\(.value)"')
+      "$VAULT_ADDR/v1/$ENGINE_NAME/data/$SECRET_PATH")
 
-    if [[ "$SECRETS" != "$LOCAL_SECRETS" ]]; then
-      echo "Secrets have changed. Updating $ENV_FILE..."
-      echo "$SECRETS" > $ENV_FILE
-      echo "Update complete."
+    if echo "$RESPONSE" | jq -e .data.data > /dev/null; then
+      SECRETS=$(echo "$RESPONSE" | jq -r '.data.data | to_entries[] | "\(.key)=\(.value)"')
+      if [[ "$SECRETS" != "$LOCAL_SECRETS" ]]; then
+        echo "Secrets have changed. Updating $ENV_FILE..."
+        echo "$SECRETS" > "$ENV_FILE"
+        echo "Update complete."
+      else
+        echo "No changes detected. $ENV_FILE remains the same."
+      fi
     else
-      echo "No changes detected. $ENV_FILE remains the same."
+      echo "Error: Failed to fetch secrets from Vault. Keeping the existing $ENV_FILE."
     fi
 
     # Sleep for the specified interval before the next iteration
@@ -69,3 +75,4 @@ function main {
 }
 
 main
+
