@@ -18,7 +18,7 @@ git clone https://github.com/Giveth/vault-fetch-service.git && cd vault-fetch-se
     VAULT_TOKEN=''
     
     ## The path for the secret store paths on vault
-    VAULT_SECRET_PATH='my-app/secrets/config'
+    SECRET_PATH='my-app/secrets/config'
     
     ## The path for configuration files on Server
     ENV_TARGET='path/of/the/env/file/on/server/myapps.env'
