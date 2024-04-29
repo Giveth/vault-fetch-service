@@ -7,7 +7,7 @@ source "$SCRIPT_DIR/.env"
 # Output file
 ENV_FILE="$ENV_TARGET"
 # Secrets Path on Vault
-SECRET_PATH="$VAULT_SECRET_PATH"
+SECRET_PATH="$SECRET_PATH"
 # Sleep interval in seconds
 SLEEP_INTERVAL=10
 
